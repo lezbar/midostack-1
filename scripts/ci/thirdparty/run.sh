@@ -65,7 +65,7 @@ function prepare_public_logs(){
 prepare_public_logs
 
 # Run midostack
-$MIDOSTACK_TOPDIR/midonet_stack.sh -q | tee $MIDOSTACK_MIDONET_STACK_LOGFILE
+$MIDOSTACK_TOPDIR/midonet_stack.sh -q
 echo result ${PIPESTATUS[0]}
 
 RESULT=${PIPESTATUS[0]}
