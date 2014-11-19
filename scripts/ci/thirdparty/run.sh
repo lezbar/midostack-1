@@ -66,6 +66,7 @@ prepare_public_logs
 
 # Run midostack
 $MIDOSTACK_TOPDIR/midonet_stack.sh -q | tee $MIDOSTACK_MIDONET_STACK_LOGFILE
+echo result ${PIPESTATUS[0]}
 
 RESULT=${PIPESTATUS[0]}
 if [ $RESULT -ne 0 ] ; then
