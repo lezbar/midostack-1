@@ -53,9 +53,6 @@ MIDOSTACK_CONFIG=$CI_SCRIPT_DIR/midostack.conf
 ZUUL_SUB_CHANGE="${ZUUL_CHANGE#${ZUUL_CHANGE%??}}"
 NEUTRON_BRANCH=refs/changes/$ZUUL_SUB_CHANGE/$ZUUL_CHANGE/$ZUUL_PATCHSET
 
-# private log files
-MIDOSTACK_MIDONET_STACK_LOGFILE=$PRIVATE_LOG_DIR/midonet_stack.console.log
-
 # public log files
 TEMPEST_CONSOLE_LOGFILE=$PUBLISH_LOG_DIR/tempest_console.log
 
@@ -66,7 +63,6 @@ prepare_public_logs
 
 # Run midostack
 $MIDOSTACK_TOPDIR/midonet_stack.sh -q
-echo result ${PIPESTATUS[0]}
 
 RESULT=${PIPESTATUS[0]}
 if [ $RESULT -ne 0 ] ; then
@@ -80,15 +76,6 @@ $CI_SCRIPT_DIR/run_tempest.sh 2>&1 | tee $TEMPEST_CONSOLE_LOGFILE
 TEMPEST_EXIT_CODE=${PIPESTATUS[0]}
 
 echo === Tempest test result: $TEMPEST_EXIT_CODE
-
-
-function prepare_private_logs(){
-    cp  -r /var/log/midolman/ $PRIVATE_LOG_DIR/
-    sudo cp -r /var/log/tomcat7/ $PRIVATE_LOG_DIR/
-    sudo chmod 777 $PRIVATE_LOG_DIR/tomcat7
-}
-
-prepare_private_logs
 
 [ $MIDOSTACK_THIRDPARTY_PUBLISH_LOGS = "True" ] && {
 
