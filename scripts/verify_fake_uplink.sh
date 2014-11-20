@@ -50,7 +50,7 @@ echo "Found Provider Router with ID ${PROVIDER_ROUTER_ID}"
 # ping the provider router interface on the public network. If it succeeds,
 # then the public network in openstack has connectivity with this host and
 # therefore VMs with floating IPs can access the internet.
-ping -W 250 -c 1 172.19.0.1
+ping -W 250 -c 1 200.200.200.1
 sleep 15
 RESPONSE=$(ping -W 250 -c 1 200.200.200.1 | grep "1 received")
 if [ ! ${#RESPONSE} -gt 1 ]; then
