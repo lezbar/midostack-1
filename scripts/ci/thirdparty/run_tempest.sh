@@ -18,8 +18,7 @@
 sed -ri 's/ipv6_subnet_attributes = True/ipv6_subnet_attributes = False/g' /opt/stack/tempest/etc/tempest.conf
 sed -ri 's/ipv6 = True/ipv6 = False/g' /opt/stack/tempest/etc/tempest.conf
 
-PYTHONPATH=/opt/stack/tempest nosetests -vv tempest.api.network.admin.test_agent_management \
-tempest.api.network.admin.test_external_network_extension \
+PYTHONPATH=/opt/stack/tempest nosetests -vv \
 tempest.api.network.test_networks \
 tempest.api.network.test_ports \
 tempest.api.network.test_networks_negative \
