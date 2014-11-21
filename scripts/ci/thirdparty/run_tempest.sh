@@ -14,16 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+sudo pip install junitxml
+
+cd /opt/stack/tempest
+sudo pip install -r test-requirements.txt
+
+# testtools 1.3.0 breaks everything!
+sudo pip uninstall -y testtools
+sudo pip install testtools==1.1.0
+
+echo "---------------------- tempest.conf"
+cat etc/tempest.conf
+
 #disable IPv6 tests
 sed -ri 's/ipv6_subnet_attributes = True/ipv6_subnet_attributes = False/g' /opt/stack/tempest/etc/tempest.conf
 sed -ri 's/ipv6 = True/ipv6 = False/g' /opt/stack/tempest/etc/tempest.conf
 
-PYTHONPATH=/opt/stack/tempest nosetests -vv \
-tempest.api.network.test_networks \
+python -m subunit.run tempest.api.network.test_networks \
 tempest.api.network.test_ports \
 tempest.api.network.test_networks_negative \
 tempest.api.network.test_security_groups \
 tempest.api.network.test_security_groups_negative \
 tempest.scenario.test_network_advanced_server_ops \
-tempest.scenario.test_network_basic_ops \
---with-xunit --xunit-file=${TEMPEST_XUNIT_FILE:-tempest-results.xml}
+tempest.scenario.test_network_basic_ops | tee test_results | subunit-2to1 | tools/colorizer.py
+
+subunit2junitxml test_results > ${TEMPEST_XUNIT_FILE:-tempest-results.xml}
+#--with-xunit --xunit-file=${TEMPEST_XUNIT_FILE:-tempest-results.xml}
