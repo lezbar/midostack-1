@@ -28,8 +28,8 @@ MIDOSTACK_TOPDIR=$(cd $(dirname $0)/../../../ && pwd)
 CI_SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
 MIDOSTACK_LOG_DIR=${MIDOSTACK_LOG_DIR:-/tmp/midostack_log}
-PUBLIC_LOG_DIR=$MIDOSTACK_LOG_DIR/devstack
-PUBLISH_LOG_DIR=$PUBLIC_LOG_DIR/$ZUUL_CHANGE/$ZUUL_PATCHSET/$BUILD_NUMBER
+PUBLIC_LOG_DIR=$MIDOSTACK_LOG_DIR/devstack/
+SCREEN_LOGDIR=$PUBLIC_LOG_DIR/$ZUUL_CHANGE/$ZUUL_PATCHSET/$BUILD_NUMBER
 PRIVATE_LOG_DIR=$MIDOSTACK_LOG_DIR/midonet
 
 PUBLIC_LOG_PATH=${PUBLIC_LOG_PATH:-$ZUUL_CHANGE}
@@ -37,7 +37,7 @@ PUBLIC_LOG_PATH=${PUBLIC_LOG_PATH:-$ZUUL_CHANGE}
 rm -rf $MIDOSTACK_LOG_DIR && mkdir -p $MIDOSTACK_LOG_DIR
 rm -rf $PUBLIC_LOG_DIR && mkdir -p $PUBLIC_LOG_DIR
 rm -rf $PRIVATE_LOG_DIR && mkdir -p $PRIVATE_LOG_DIR
-rm -rf $PUBLISH_LOG_DIR && mkdir -p $PUBLISH_LOG_DIR
+rm -rf $SCREEN_LOGDIR && mkdir -p $SCREEN_LOGDIR
 
 MIDOSTACK_CONFIG=$CI_SCRIPT_DIR/midostack.conf
 
@@ -54,10 +54,10 @@ ZUUL_SUB_CHANGE="${ZUUL_CHANGE#${ZUUL_CHANGE%??}}"
 NEUTRON_BRANCH=refs/changes/$ZUUL_SUB_CHANGE/$ZUUL_CHANGE/$ZUUL_PATCHSET
 
 # public log files
-TEMPEST_CONSOLE_LOGFILE=$PUBLISH_LOG_DIR/tempest_console.log
+TEMPEST_CONSOLE_LOGFILE=$SCREEN_LOGDIR/tempest_console.log
 
 function prepare_public_logs(){
-    echo "Midokura CI Bot contact:  mido-openstack-dev@midokura.com" > $PUBLISH_LOG_DIR/CONTACT.txt
+    echo "Midokura CI Bot contact:  mido-openstack-dev@midokura.com" > $SCREEN_LOGDIR/CONTACT.txt
 }
 prepare_public_logs
 
