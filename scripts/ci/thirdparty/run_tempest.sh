@@ -34,9 +34,7 @@ python -m subunit.run tempest.api.network.test_networks \
 tempest.api.network.test_ports \
 tempest.api.network.test_networks_negative \
 tempest.api.network.test_security_groups \
-tempest.api.network.test_security_groups_negative \
-tempest.scenario.test_network_advanced_server_ops \
-tempest.scenario.test_network_basic_ops | tee test_results | subunit-2to1 | tools/colorizer.py
+tempest.api.network.test_security_groups_negative | tee test_results | subunit-2to1 | tools/colorizer.py
 
 subunit2junitxml test_results > ${TEMPEST_XUNIT_FILE:-tempest-results.xml}
 #--with-xunit --xunit-file=${TEMPEST_XUNIT_FILE:-tempest-results.xml}
