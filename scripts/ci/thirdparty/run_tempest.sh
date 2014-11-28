@@ -37,4 +37,3 @@ tempest.api.network.test_security_groups \
 tempest.api.network.test_security_groups_negative | tee test_results | subunit-2to1 | tools/colorizer.py
 
 subunit2junitxml test_results > ${TEMPEST_XUNIT_FILE:-tempest-results.xml}
-#--with-xunit --xunit-file=${TEMPEST_XUNIT_FILE:-tempest-results.xml}

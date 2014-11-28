@@ -19,7 +19,6 @@
 #   - Read the configuration for thirdparty testing
 #   - Run midonet_stack.sh
 #   - Publish logs to the log server
-#   - Vote and post comment on gerrit
 
 set -x
 set -a
@@ -30,13 +29,9 @@ CI_SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 MIDOSTACK_LOG_DIR=${MIDOSTACK_LOG_DIR:-/tmp/midostack_log}
 PUBLIC_LOG_DIR=$MIDOSTACK_LOG_DIR/devstack/
 SCREEN_LOGDIR=$PUBLIC_LOG_DIR/$ZUUL_CHANGE/$ZUUL_PATCHSET/$BUILD_NUMBER
-PRIVATE_LOG_DIR=$MIDOSTACK_LOG_DIR/midonet
-
-PUBLIC_LOG_PATH=${PUBLIC_LOG_PATH:-$ZUUL_CHANGE}
 
 rm -rf $MIDOSTACK_LOG_DIR && mkdir -p $MIDOSTACK_LOG_DIR
 rm -rf $PUBLIC_LOG_DIR && mkdir -p $PUBLIC_LOG_DIR
-rm -rf $PRIVATE_LOG_DIR && mkdir -p $PRIVATE_LOG_DIR
 rm -rf $SCREEN_LOGDIR && mkdir -p $SCREEN_LOGDIR
 
 MIDOSTACK_CONFIG=$CI_SCRIPT_DIR/midostack.conf
@@ -81,9 +76,6 @@ echo === Tempest test result: $TEMPEST_EXIT_CODE
 
     # publish public logs
     scp -r $PUBLIC_LOG_DIR/$ZUUL_CHANGE midokura@3rdparty-logs.midokura.com:/var/www/results/
-
-    # save private logs
-    #scp -r $PRIVATE_LOG_DIR/ midokura@3rdparty-logs.midokura.com:/var/www/results/$PUBLIC_LOG_PATH
 }
 
 exit $TEMPEST_EXIT_CODE
