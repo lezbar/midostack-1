@@ -26,13 +26,15 @@ set -a
 MIDOSTACK_TOPDIR=$(cd $(dirname $0)/../../../ && pwd)
 CI_SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
-MIDOSTACK_LOG_DIR=${MIDOSTACK_LOG_DIR:-/tmp/midostack_log}
-PUBLIC_LOG_DIR=$MIDOSTACK_LOG_DIR/devstack/
+#MIDOSTACK_LOG_DIR=${MIDOSTACK_LOG_DIR:-/tmp/midostack_log}
+PUBLIC_LOG_DIR=/tmp/devstack/
 SCREEN_LOGDIR=$PUBLIC_LOG_DIR/$ZUUL_CHANGE/$ZUUL_PATCHSET/$BUILD_NUMBER
+MIDOSTACK_LOG_DIR=${MIDOSTACK_LOG_DIR:-$SCREEN_LOGDIR/midostack}
 
-rm -rf $MIDOSTACK_LOG_DIR && mkdir -p $MIDOSTACK_LOG_DIR
+#rm -rf $MIDOSTACK_LOG_DIR && mkdir -p $MIDOSTACK_LOG_DIR
 rm -rf $PUBLIC_LOG_DIR && mkdir -p $PUBLIC_LOG_DIR
 rm -rf $SCREEN_LOGDIR && mkdir -p $SCREEN_LOGDIR
+rm -rf $MIDOSTACK_LOG_DIR && mkdir -p $MIDOSTACK_LOG_DIR
 
 MIDOSTACK_CONFIG=$CI_SCRIPT_DIR/midostack.conf
 
@@ -63,6 +65,7 @@ RESULT=${PIPESTATUS[0]}
 if [ $RESULT -ne 0 ] ; then
     echo "midonet_stack.sh failed. Exiting..."
     scp -r $PUBLIC_LOG_DIR/$ZUUL_CHANGE midokura@3rdparty-logs.midokura.com:/var/www/results/
+    echo "logs have been copied to http://3rdparty-logs.midokura.com/$ZUUL_CHANGE/$ZUUL_PATCHSET/$BUILD_NUMBER"
     exit 1
 fi
 
@@ -76,6 +79,7 @@ echo === Tempest test result: $TEMPEST_EXIT_CODE
 
     # publish public logs
     scp -r $PUBLIC_LOG_DIR/$ZUUL_CHANGE midokura@3rdparty-logs.midokura.com:/var/www/results/
+    echo "logs have been copied to http://3rdparty-logs.midokura.com/$ZUUL_CHANGE/$ZUUL_PATCHSET/$BUILD_NUMBER"
 }
 
 exit $TEMPEST_EXIT_CODE
